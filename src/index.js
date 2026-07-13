@@ -18,13 +18,18 @@ app.get('/', (req, res) => {
   res.json({ message: 'TaskFlow API is running!' });
 });
 
-// Simple MongoDB connection
-mongoose.connect(process.env.MONGODB_URI, {
-  serverSelectionTimeoutMS: 5000,
-  socketTimeoutMS: 45000,
-})
-.then(() => console.log('Connected to MongoDB'))
-.catch(err => console.error('MongoDB connection error:', err));
+// MongoDB Connection
+const connectDB = async () => {
+  try {
+    await mongoose.connect(process.env.MONGODB_URI, {
+      serverSelectionTimeoutMS: 5000,
+    });
+    console.log('Connected to MongoDB');
+  } catch (error) {
+    console.error('MongoDB connection error:', error.message);
+  }
+};
 
-// Export for Vercel
+connectDB();
+
 module.exports = app;
